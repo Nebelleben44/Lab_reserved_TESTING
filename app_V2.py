@@ -366,7 +366,13 @@ if mobile:
         # Usual app interface
         message = f"### Welcome <span class='welcome-message'>{st.session_state['name']}</span>"
         st.markdown(message, unsafe_allow_html=True)
-        selected_tab = st.selectbox("### Select Actions", ["Reservation Tables", "Reservation Forms", "Reservation Cancellation", "Announcement"])
+        if role not in ['Admins', 'Lecturer']:
+
+            selected_tab = st.selectbox("### Select Actions", ["Reservation Tables", "Reservation Forms", "Reservation Cancellation"])
+
+        else:
+            selected_tab = st.selectbox("### Select Actions", ["Reservation Tables", "Reservation Forms", "Reservation Cancellation", "Announcement"])
+
 
         if selected_tab == "Reservation Tables":
             room_selection = st.selectbox("### Select a Room", list(st.session_state.equipment_details.keys()),
@@ -905,7 +911,7 @@ if mobile:
 
 
 
-        elif selected_tab == 'Announcement' and role in ["Admins", "Lecturer"]:
+        elif selected_tab == 'Announcement':
 
             announcement_text = read_announcement()
 
