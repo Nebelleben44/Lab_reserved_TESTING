@@ -49,6 +49,7 @@ announcement_text = read_announcement()
 def update_announcement(text):
     with open(ANNOUNCEMENT_FILE_PATH, 'w') as f:
         f.write(text)
+        backup_to_github(AUTOCLAVES_PATH)
 
 # Function to load data from CSV
 def load_data(file_path):
@@ -185,6 +186,7 @@ def log_action(action, user, details):
 
         log_df = pd.concat([log_df, pd.DataFrame([log_entry])], ignore_index=True)
         log_df.to_csv(log_file_path, index=False)
+        backup_to_github(log_file_path)
     except Exception as e:
         st.error(f"Error logging action: {e}")
 
