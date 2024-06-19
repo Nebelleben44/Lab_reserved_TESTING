@@ -308,7 +308,7 @@ def apply_web_style():
 
 # Device type selection in sidebar
 mobile = st.toggle('Mobile Version')
-
+announcement_text = read_announcement()
 # Apply the appropriate style based on the toggle
 if mobile:
     apply_mobile_style()
@@ -364,9 +364,7 @@ if mobile:
                 st.sidebar.success(f"{'Disabled' if current_status else 'Enabled'} {selected_equipment_admin}")
                 save_equipment_details(st.session_state.equipment_details)
 
-        announcement_text = read_announcement()
-        
-            # Always check if there's an announcement to display
+        # Always check if there's an announcement to display
         if announcement_text:
             # Using st.markdown to insert HTML for a moving text effect
 
