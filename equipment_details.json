@@ -3,7 +3,7 @@
         "Refrigerated Incubator Shaker": {
             "image": "Refrigerated_Incubator_Shaker.jpg",
             "details": "Innova 4340, NEW BRUNSWICK SCIENTIFIC.",
-            "enabled": false
+            "enabled": true
         },
         "Centrifuge (swing rotor)": {
             "image": "Centrifuge.jpg",
