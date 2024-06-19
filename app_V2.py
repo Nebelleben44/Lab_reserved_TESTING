@@ -100,13 +100,9 @@ def backup_to_github(file_path, commit_message="Update CSV data"):
         # Push the changes
         subprocess.run(["git", "push"], check=True)
 
-        st.success(f"Changes to {file_path} have been backed up to GitHub.")
+        # st.success(f"Changes to {file_path} have been backed up to GitHub.")
     except subprocess.CalledProcessError as e:
         st.error(f"An error occurred while backing up to GitHub: {e}")
-
-# Ensure your git is configured
-# subprocess.run(["git", "config", "--global", "user.name", "Your Name"], check=True)
-# subprocess.run(["git", "config", "--global", "user.email", "your.email@example.com"], check=True)
 
 # Function to convert DataFrame to CSV string
 def convert_df_to_csv(df):
@@ -118,7 +114,6 @@ def convert_df_to_csv(df):
 def load_json(file_path):
     with open(file_path, 'r') as file:
         return json.load(file)
-
 
 def save_equipment_details(details, json_file_path='equipment_details.json'):
     with open(json_file_path, 'w') as file:
