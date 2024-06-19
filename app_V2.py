@@ -112,7 +112,7 @@ def backup_to_github(file_path, commit_message="Update data"):
         # Push the changes
         subprocess.run(["git", "push"], check=True)
 
-        st.success(f"Changes to {file_path} have been backed up to GitHub.")
+        # st.success(f"Changes to {file_path} have been backed up to GitHub.")
     except subprocess.CalledProcessError as e:
         st.error(f"An error occurred while backing up to GitHub: {e}")
 
@@ -350,25 +350,6 @@ if mobile:
     if st.session_state["authentication_status"]:
         role = credentials['usernames'][st.session_state['username'].lower()]['role']
         st.session_state['authenticator'].logout(location='main')
-
-
-        if role == 'Admins':
-            # Display reservation data from Google Sheets
-            st.sidebar.write("Admin Interface")
-            selected_room_admin = st.sidebar.selectbox("Select a room to manage equipment:",
-                                                       list(st.session_state.equipment_details.keys()))
-            equipment_list = list(st.session_state.equipment_details[selected_room_admin].keys())
-            selected_equipment_admin = st.sidebar.selectbox("Select equipment to toggle availability:", equipment_list)
-
-            if st.sidebar.button("Toggle Availability"):
-                # Toggle equipment availability status
-                current_status = st.session_state.equipment_details[selected_room_admin][selected_equipment_admin][
-                    'enabled']
-                st.session_state.equipment_details[selected_room_admin][selected_equipment_admin][
-                    'enabled'] = not current_status
-                # Show success message and save updated status
-                st.sidebar.success(f"{'Disabled' if current_status else 'Enabled'} {selected_equipment_admin}")
-                save_equipment_details(st.session_state.equipment_details)
 
         # Always check if there's an announcement to display
         if announcement_text:
@@ -924,22 +905,18 @@ if mobile:
 
 
 
-        elif selected_tab == 'Announcement':
+        elif selected_tab == 'Announcement' and role in ["Admins", "Lecturer"]:
 
             announcement_text = read_announcement()
 
-            # Check if the user is authorized (either an admin or a lecturer) and allow them to post an announcement
+            st.write("Admin and Lecturer Controls")
 
-            if role in ["Admins", "Lecturer"]:
+            new_announcement_text = st.text_area("Enter announcement:", value=announcement_text)
 
-                st.write("Admin and Lecturer Controls")
+            if st.button("Update Announcement"):
+                update_announcement(new_announcement_text,ANNOUNCEMENT_FILE_PATH)
 
-                new_announcement_text = st.text_area("Enter announcement:", value=announcement_text)
-
-                if st.button("Update Announcement"):
-                    update_announcement(new_announcement_text,ANNOUNCEMENT_FILE_PATH)
-
-                    st.session_state['announcement'] = new_announcement_text
+                st.session_state['announcement'] = new_announcement_text
 
     elif st.session_state["authentication_status"] is False:
         st.error('Name/password is incorrect')
