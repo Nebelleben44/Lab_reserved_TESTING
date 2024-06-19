@@ -345,16 +345,16 @@ if st.session_state["authentication_status"] != True:
         )
     st.session_state['authenticator'].login()
 
+    # Usual app interface
+    st.session_state['authenticator'].logout(location='sidebar')
+    message = f"### Welcome <span class='welcome-message'>{st.session_state['name']}</span>"
+    st.markdown(message, unsafe_allow_html=True)
+
 elif st.session_state["authentication_status"] is False:
     st.error('Name/password is incorrect')
 
 elif st.session_state["authentication_status"] is None:
     st.warning('Please enter your username and password')
-
-    # Usual app interface
-    st.session_state['authenticator'].logout(location='sidebar')
-    message = f"### Welcome <span class='welcome-message'>{st.session_state['name']}</span>"
-    st.markdown(message, unsafe_allow_html=True)
 
 # if mobile:
 #     credentials = {
