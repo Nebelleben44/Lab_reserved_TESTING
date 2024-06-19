@@ -76,7 +76,7 @@ def backup_to_github(file_path, commit_message="Update CSV data"):
         token = st.secrets["github"]["token"]
 
         # Set up the remote URL with the token for authentication
-        repo_url = f"https://{username}:{token}@github.com/username/repository.git"
+        repo_url = f"https://{username}:{token}@github.com/{username}/Lab_reserved_TESTING.git"
 
         # Set the remote URL
         subprocess.run(["git", "remote", "set-url", "origin", repo_url], check=True)
