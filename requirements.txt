@@ -2,5 +2,4 @@ streamlit
 pandas
 streamlit_authenticator
 plotly
-json
 pytz
