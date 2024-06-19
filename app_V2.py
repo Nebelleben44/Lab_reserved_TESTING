@@ -366,7 +366,8 @@ if mobile:
         # Usual app interface
         message = f"### Welcome <span class='welcome-message'>{st.session_state['name']}</span>"
         st.markdown(message, unsafe_allow_html=True)
-        if role in ['Admins', 'Lecturer']:
+
+        if role in ["Admins", "Lecturer"]:
 
             selected_tab = st.selectbox("### Select Actions", ["Reservation Tables", "Reservation Forms", "Reservation Cancellation", "Announcement"])
 
