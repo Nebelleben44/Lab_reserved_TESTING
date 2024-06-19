@@ -50,7 +50,7 @@ def update_announcement(text,filepath):
     try:
         with open(file_path, 'w') as file:
             file.write(text)
-        backup_to_github(file_path, commit_message="Update announcements")
+        backup_to_github(filepath, commit_message="Update announcements")
     except Exception as e:
         st.error(f"Error saving announcement: {e}")
 
