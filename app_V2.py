@@ -13,23 +13,6 @@ st.set_page_config(layout="wide")
 # Set the timezone
 os.environ['TZ'] = 'Asia/Bangkok'
 time.tzset()
-# Define your user credentials
-credentials = {
-    "usernames": {
-        user.lower(): {
-            "name": st.secrets["credentials"]["usernames"][user]["name"],
-            "username": user.lower(),
-            "email": st.secrets["credentials"]["usernames"][user]["email"],
-            "password": st.secrets["credentials"]["usernames"][user]["password"],
-            "role": st.secrets["credentials"]["usernames"][user]["role"]
-        }
-        for user in st.secrets["credentials"]["usernames"]
-    }
-}
-
-# Initialize session state for authentication status
-if 'authentication_status' not in st.session_state:
-    st.session_state['authentication_status'] = None
 
 # Constants
 PCR_FILE_PATH = 'pcr_data.csv'
@@ -333,6 +316,22 @@ else:
     apply_web_style()
 
 # Authentication logic
+credentials = {
+        "usernames": {
+            user.lower(): {
+                "name": st.secrets["credentials"]["usernames"][user]["name"],
+                "username": user.lower(),
+                "email": st.secrets["credentials"]["usernames"][user]["email"],
+                "password": st.secrets["credentials"]["usernames"][user]["password"],
+                "role": st.secrets["credentials"]["usernames"][user]["role"]
+            }
+            for user in st.secrets["credentials"]["usernames"]
+        }
+    }
+
+if 'authentication_status' not in st.session_state:
+    st.session_state['authentication_status'] = None
+
 if st.session_state["authentication_status"] != True:
     # Initialize the authenticator
     if 'authenticator' not in st.session_state:
