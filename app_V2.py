@@ -370,6 +370,19 @@ if mobile:
 
             selected_tab = st.selectbox("### Select Actions", ["Reservation Tables", "Reservation Forms", "Reservation Cancellation", "Announcement"])
 
+            if selected_tab == 'Announcement':
+
+                announcement_text = read_announcement()
+
+                st.write("Admin and Lecturer Controls")
+
+                new_announcement_text = st.text_area("Enter announcement:", value=announcement_text)
+
+                if st.button("Update Announcement"):
+                    update_announcement(new_announcement_text, ANNOUNCEMENT_FILE_PATH)
+
+                    st.session_state['announcement'] = new_announcement_text
+
         else:
             selected_tab = st.selectbox("### Select Actions", ["Reservation Tables", "Reservation Forms", "Reservation Cancellation"])
 
@@ -908,21 +921,6 @@ if mobile:
             else:
 
                 st.write("## You have no reservations.")
-
-
-
-        elif selected_tab == 'Announcement':
-
-            announcement_text = read_announcement()
-
-            st.write("Admin and Lecturer Controls")
-
-            new_announcement_text = st.text_area("Enter announcement:", value=announcement_text)
-
-            if st.button("Update Announcement"):
-                update_announcement(new_announcement_text,ANNOUNCEMENT_FILE_PATH)
-
-                st.session_state['announcement'] = new_announcement_text
 
     elif st.session_state["authentication_status"] is False:
         st.error('Name/password is incorrect')
