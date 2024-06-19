@@ -55,7 +55,6 @@ init_file(PCR_FILE_PATH, ['Name', 'Room', 'Equipments', 'Start_Time', 'End_Time'
 init_file(NON_PCR_FILE_PATH, ['Name', 'Room', 'Equipments', 'Start_Time', 'End_Time'])
 init_file(AUTOCLAVES_PATH, ['Counts'])
 init_announcement_file()
-announcement_text = read_announcement()
 
 # Read the announcement from the text file
 def read_announcement():
@@ -354,6 +353,7 @@ if st.session_state["authentication_status"] != True:
         st.warning("Please enter your username and password")
 else:
     st.write("This is your main application content.")
+    announcement_text = read_announcement()
 
 # if mobile:
 #     credentials = {
