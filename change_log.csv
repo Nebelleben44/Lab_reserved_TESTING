@@ -5,3 +5,4 @@ Equipments                  PCR 1
 Start_Time    2024-06-19 11:00:00
 End_Time      2024-06-19 14:00:00
 Name: 0, dtype: object"
+2024-06-19 14:36:40,Add Reservation,Yanawat_4511,"{'Name': 'Yanawat_4511', 'Room': 'Central Lab, 5th floor', 'Equipments': 'Refrigerated Incubator Shaker', 'Start_Time': datetime.datetime(2024, 6, 19, 15, 0), 'End_Time': datetime.datetime(2024, 6, 19, 17, 0)}"
