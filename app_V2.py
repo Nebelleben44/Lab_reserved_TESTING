@@ -69,14 +69,24 @@ def save_data(df, file_path):
     except Exception as e:
         st.error(f"Error saving data: {e}")
 
+def configure_git():
+    try:
+        username = st.secrets["github"]["username"]
+        email = st.secrets["github"]["email"]
+        subprocess.run(["git", "config", "--global", "user.name", username], check=True)
+        subprocess.run(["git", "config", "--global", "user.email", email], check=True)
+    except subprocess.CalledProcessError as e:
+        st.error(f"An error occurred while configuring Git: {e}")
+
 
 def backup_to_github(file_path, commit_message="Update CSV data"):
     try:
+        configure_git()
         username = st.secrets["github"]["username"]
         token = st.secrets["github"]["token"]
 
         # Set up the remote URL with the token for authentication
-        repo_url = f"https://{username}:{token}@github.com/{username}/Lab_reserved_TESTING.git"
+        repo_url = f"https://{username}:{token}@github.com/username/repository.git"
 
         # Set the remote URL
         subprocess.run(["git", "remote", "set-url", "origin", repo_url], check=True)
@@ -93,7 +103,6 @@ def backup_to_github(file_path, commit_message="Update CSV data"):
         st.success(f"Changes to {file_path} have been backed up to GitHub.")
     except subprocess.CalledProcessError as e:
         st.error(f"An error occurred while backing up to GitHub: {e}")
-
 
 # Ensure your git is configured
 # subprocess.run(["git", "config", "--global", "user.name", "Your Name"], check=True)
