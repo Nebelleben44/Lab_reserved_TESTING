@@ -46,11 +46,11 @@ init_announcement_file()
 announcement_text = read_announcement()
 
 # Update the announcement in the text file
-def update_announcement(text,filepath):
+def update_announcement(text,file_path):
     try:
         with open(file_path, 'w') as file:
             file.write(text)
-        backup_to_github(filepath, commit_message="Update announcements")
+        backup_to_github(file_path, commit_message="Update announcements")
     except Exception as e:
         st.error(f"Error saving announcement: {e}")
 
