@@ -74,6 +74,11 @@ def save_data(df, file_path):
     except Exception as e:
         st.error(f"Error saving data: {e}")
 
+def fetch_data(file_path):
+    df = load_data(file_path)
+    df['Start_Time'] = pd.to_datetime(df['Start_Time'], format='%Y/%m/%d %H:%M:%S', errors='coerce')
+    df['End_Time'] = pd.to_datetime(df['End_Time'], format='%Y/%m/%d %H:%M:%S', errors='coerce')
+    return df
 
 # Configure Git
 def configure_git():
@@ -146,12 +151,12 @@ def convert_df_to_csv(df):
 
 # Download non-PCR data
 def download_non_pcr():
-    df_non_pcr = load_data(NON_PCR_FILE_PATH)
+    df_non_pcr = fetch_data(NON_PCR_FILE_PATH)
     return df_non_pcr
 
 # Download PCR data
 def download_pcr():
-    df_pcr = load_data(PCR_FILE_PATH)
+    df_pcr = fetch_data(PCR_FILE_PATH)
     return df_pcr
 
 # Generate time slots
@@ -397,10 +402,10 @@ if mobile:
             pcr_end = datetime.datetime.combine(selected_date, datetime.time(20, 0))
 
             # Read reservation data from CSV files
-            df_non_pcr = load_data(NON_PCR_FILE_PATH)
+            df_non_pcr = fetch_data(NON_PCR_FILE_PATH)
             df_non_pcr.dropna(inplace=True)
 
-            df_pcr = load_data(PCR_FILE_PATH)
+            df_pcr = fetch_data(PCR_FILE_PATH)
             df_pcr.dropna(inplace=True)
 
             # Filter DataFrames for the selected day
@@ -587,7 +592,7 @@ if mobile:
 
                 if st.button('### Submit PCR Reservation'):
 
-                    df_pcr = load_data(PCR_FILE_PATH)
+                    df_pcr = fetch_data(PCR_FILE_PATH)
 
                     df_pcr.dropna(inplace=True)
 
@@ -714,7 +719,7 @@ if mobile:
 
                     if st.button("### Submit Reservation"):
 
-                        df_non_pcr = load_data(NON_PCR_FILE_PATH)
+                        df_non_pcr = fetch_data(NON_PCR_FILE_PATH)
 
                         df_non_pcr.dropna(inplace=True)
 
@@ -822,11 +827,11 @@ if mobile:
 
         elif selected_tab == "Reservation Cancellation":
 
-            df_non_pcr = load_data(NON_PCR_FILE_PATH)
+            df_non_pcr = fetch_data(NON_PCR_FILE_PATH)
 
             df_non_pcr.dropna(inplace=True)
 
-            df_pcr = load_data(PCR_FILE_PATH)
+            df_pcr = fetch_data(PCR_FILE_PATH)
 
             df_pcr.dropna(inplace=True)
 
@@ -1045,10 +1050,10 @@ else:
             pcr_end = datetime.datetime.combine(selected_date, datetime.time(20, 0))
 
             # Read reservation data from CSV files
-            df_non_pcr = load_data(NON_PCR_FILE_PATH)
+            df_non_pcr = fetch_data(NON_PCR_FILE_PATH)
             df_non_pcr.dropna(inplace=True)
 
-            df_pcr = load_data(PCR_FILE_PATH)
+            df_pcr = fetch_data(PCR_FILE_PATH)
             df_pcr.dropna(inplace=True)
 
             # Filter DataFrames for the selected day
@@ -1212,7 +1217,7 @@ else:
                     st.error("No available slots for the selected day.")
 
                 if st.button('### Submit PCR Reservation'):
-                    df_pcr = load_data(PCR_FILE_PATH)
+                    df_pcr = fetch_data(PCR_FILE_PATH)
                     df_pcr.dropna(inplace=True)
 
                     start_datetime = datetime.datetime.combine(reservation_date, selected_slot['start'])
@@ -1305,7 +1310,7 @@ else:
 
                     if st.button("### Submit Reservation"):
 
-                        df_non_pcr = load_data(NON_PCR_FILE_PATH)
+                        df_non_pcr = fetch_data(NON_PCR_FILE_PATH)
 
                         df_non_pcr.dropna(inplace=True)
 
@@ -1409,10 +1414,10 @@ else:
                                     f"Reservation successful for {selected_equipment} in {selected_room} from {start_datetime.strftime('%Y/%m/%d %H:%M:%S')} to {end_datetime.strftime('%Y/%m/%d %H:%M:%S')}")
 
         with tab3:
-            df_non_pcr = load_data(NON_PCR_FILE_PATH)
+            df_non_pcr = fetch_data(NON_PCR_FILE_PATH)
             df_non_pcr.dropna(inplace=True)
 
-            df_pcr = load_data(PCR_FILE_PATH)
+            df_pcr = fetch_data(PCR_FILE_PATH)
             df_pcr.dropna(inplace=True)
 
             # Combining both dataframes to get user-specific reservations
