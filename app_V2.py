@@ -882,6 +882,7 @@ if mobile:
 
                 if st.button("Update Announcement"):
                     update_announcement(new_announcement_text)
+                    save_announcment(ANNOUNCEMENT_FILE_PATH)
 
                     st.session_state['announcement'] = new_announcement_text
 
@@ -1005,6 +1006,7 @@ else:
                 new_announcement_text = st.text_area("### Enter announcement:", value=announcement_text)
                 if st.button("Update Announcement"):
                     update_announcement(new_announcement_text)
+                    save_announcment(ANNOUNCEMENT_FILE_PATH)
                     st.session_state['announcement'] = new_announcement_text
 
         # Always check if there's an announcement to display
