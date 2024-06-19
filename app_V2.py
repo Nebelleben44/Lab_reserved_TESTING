@@ -45,17 +45,15 @@ init_file(AUTOCLAVES_PATH, ['Counts'])
 init_announcement_file()
 announcement_text = read_announcement()
 
-def save_announcment(file_path):
-    try:
-        backup_to_github(file_path)
-    except Exception as e:
-        st.error(f"Error saving data: {e}")
-
-
 # Update the announcement in the text file
-def update_announcement(text):
-    with open(ANNOUNCEMENT_FILE_PATH, 'w') as f:
-        f.write(text)
+def update_announcement(text,filepath):
+    try:
+        with open(file_path, 'w') as file:
+            file.write(text)
+        backup_to_github(file_path, commit_message="Update announcements")
+    except Exception as e:
+        st.error(f"Error saving announcement: {e}")
+
 
 # Function to load data from CSV
 def load_data(file_path):
@@ -881,8 +879,7 @@ if mobile:
                 new_announcement_text = st.text_area("Enter announcement:", value=announcement_text)
 
                 if st.button("Update Announcement"):
-                    update_announcement(new_announcement_text)
-                    save_announcment(ANNOUNCEMENT_FILE_PATH)
+                    update_announcement(new_announcement_text,ANNOUNCEMENT_FILE_PATH)
 
                     st.session_state['announcement'] = new_announcement_text
 
@@ -1005,8 +1002,7 @@ else:
                 st.write("Admin and Lecturer Controls")
                 new_announcement_text = st.text_area("### Enter announcement:", value=announcement_text)
                 if st.button("Update Announcement"):
-                    update_announcement(new_announcement_text)
-                    save_announcment(ANNOUNCEMENT_FILE_PATH)
+                    update_announcement(new_announcement_text,ANNOUNCEMENT_FILE_PATH)
                     st.session_state['announcement'] = new_announcement_text
 
         # Always check if there's an announcement to display
