@@ -1503,7 +1503,7 @@ else:
                 st.dataframe(autoclaves_count)
 
                 st.write("### Logs")
-                logs = load_data(log_file_path)
+                logs = load_data(LOG_FILE_PATH)
                 st.dataframe(logs)
 
                 st.write("### Manage Data")
