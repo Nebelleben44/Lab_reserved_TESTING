@@ -981,21 +981,6 @@ else:
     if st.session_state["authentication_status"]:
         role = credentials['usernames'][st.session_state['username'].lower()]['role']
 
-        if role == 'Admins':
-            # Display reservation data from Google Sheets
-            st.sidebar.write("Admin Interface")
-            selected_room_admin = st.sidebar.selectbox("Select a room to manage equipment:", list(st.session_state.equipment_details.keys()))
-            equipment_list = list(st.session_state.equipment_details[selected_room_admin].keys())
-            selected_equipment_admin = st.sidebar.selectbox("Select equipment to toggle availability:", equipment_list)
-
-            if st.sidebar.button("Toggle Availability"):
-                # Toggle equipment availability status
-                current_status = st.session_state.equipment_details[selected_room_admin][selected_equipment_admin]['enabled']
-                st.session_state.equipment_details[selected_room_admin][selected_equipment_admin]['enabled'] = not current_status
-                # Show success message and save updated status
-                st.sidebar.success(f"{'Disabled' if current_status else 'Enabled'} {selected_equipment_admin}")
-                save_equipment_details(st.session_state.equipment_details)
-
         # Check if the user is authorized (either an admin or a lecturer) and allow them to post an announcement
         if role in ["Admins", "Lecturer"]:
             with st.sidebar:
@@ -1619,6 +1604,24 @@ else:
                         st.success(f"{selected_autoclave} count updated successfully.")
                     except Exception as e:
                         st.error(f"Error updating autoclave count: {e}")
+
+                # Equipment Availability
+                st.write("### Equipment Availability")
+                selected_room_admin = st.selectbox("Select a room to manage equipment:",
+                                                           list(st.session_state.equipment_details.keys()))
+                equipment_list = list(st.session_state.equipment_details[selected_room_admin].keys())
+                selected_equipment_admin = st.selectbox("Select equipment to toggle availability:",
+                                                                equipment_list)
+
+                if st.button("Toggle Availability"):
+                    # Toggle equipment availability status
+                    current_status = st.session_state.equipment_details[selected_room_admin][selected_equipment_admin][
+                        'enabled']
+                    st.session_state.equipment_details[selected_room_admin][selected_equipment_admin][
+                        'enabled'] = not current_status
+                    # Show success message and save updated status
+                    st.success(f"{'Disabled' if current_status else 'Enabled'} {selected_equipment_admin}")
+                    save_equipment_details(st.session_state.equipment_details)
 
                 # File upload to update data
                 st.write("#### Upload CSV to Update Data")
