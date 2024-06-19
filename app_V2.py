@@ -6,6 +6,7 @@ import plotly.express as px
 import json
 from io import StringIO
 import os, time
+import subprocess
 
 st.set_page_config(layout="wide")
 
@@ -50,7 +51,6 @@ def update_announcement(text):
         f.write(text)
 
 # Function to load data from CSV
-@st.cache_data
 def load_data(file_path):
     try:
         if os.path.exists(file_path):
@@ -62,12 +62,42 @@ def load_data(file_path):
         return pd.DataFrame()
 
 # Function to save data to CSV
-@st.cache_data
 def save_data(df, file_path):
     try:
         df.to_csv(file_path, index=False)
+        backup_to_github(file_path, commit_message=f"Update {os.path.basename(file_path)}")
     except Exception as e:
-        st.error(f"Error writing data to file {file_path}: {e}")
+        st.error(f"Error saving data: {e}")
+
+
+def backup_to_github(file_path, commit_message="Update CSV data"):
+    try:
+        username = st.secrets["github"]["username"]
+        token = st.secrets["github"]["token"]
+
+        # Set up the remote URL with the token for authentication
+        repo_url = f"https://{username}:{token}@github.com/username/repository.git"
+
+        # Set the remote URL
+        subprocess.run(["git", "remote", "set-url", "origin", repo_url], check=True)
+
+        # Stage the file
+        subprocess.run(["git", "add", file_path], check=True)
+
+        # Commit the changes
+        subprocess.run(["git", "commit", "-m", commit_message], check=True)
+
+        # Push the changes
+        subprocess.run(["git", "push"], check=True)
+
+        st.success(f"Changes to {file_path} have been backed up to GitHub.")
+    except subprocess.CalledProcessError as e:
+        st.error(f"An error occurred while backing up to GitHub: {e}")
+
+
+# Ensure your git is configured
+# subprocess.run(["git", "config", "--global", "user.name", "Your Name"], check=True)
+# subprocess.run(["git", "config", "--global", "user.email", "your.email@example.com"], check=True)
 
 # Function to convert DataFrame to CSV string
 def convert_df_to_csv(df):
