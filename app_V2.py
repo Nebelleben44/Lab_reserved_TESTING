@@ -338,22 +338,23 @@ if st.session_state["authentication_status"] != True:
     if 'authenticator' not in st.session_state:
         st.session_state['authenticator'] = stauth.Authenticate(
             credentials,
-            "my_cookie_name",
-            "my_signature_key",
+            "my_cookie_name",  # Define a specific cookie name for your app
+            "my_signature_key",  # This should be a long random string to secure the cookie
             cookie_expiry_days=30,
             pre_authorized=None
         )
-    name, authentication_status, username = st.session_state['authenticator'].login('Login', 'main')
-    st.session_state['authentication_status'] = authentication_status
-    if st.session_state["authentication_status"]:
-        st.success(f"Welcome {name}!")
-    elif st.session_state["authentication_status"] is False:
-        st.error("Name/password is incorrect")
-    elif st.session_state["authentication_status"] is None:
-        st.warning("Please enter your username and password")
-else:
-    st.write("This is your main application content.")
-    announcement_text = read_announcement()
+    st.session_state['authenticator'].login()
+
+elif st.session_state["authentication_status"] is False:
+    st.error('Name/password is incorrect')
+
+elif st.session_state["authentication_status"] is None:
+    st.warning('Please enter your username and password')
+
+    # Usual app interface
+    st.session_state['authenticator'].logout(location='sidebar')
+    message = f"### Welcome <span class='welcome-message'>{st.session_state['name']}</span>"
+    st.markdown(message, unsafe_allow_html=True)
 
 # if mobile:
 #     credentials = {
