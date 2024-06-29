@@ -961,10 +961,6 @@ else:
             )
         st.session_state['authenticator'].login()
 
-    end_time = time.time()  # End timer
-
-    st.write(f"Startup time: {end_time - start_time:.2f} seconds")
-
     if st.session_state["authentication_status"]:
         role = credentials['usernames'][st.session_state['username'].lower()]['role']
 
@@ -1648,3 +1644,7 @@ else:
 
     elif st.session_state["authentication_status"] is None:
         st.warning('Please enter your username and password')
+
+    end_time = time.time()  # End timer
+
+    st.write(f"Startup time: {end_time - start_time:.2f} seconds")
