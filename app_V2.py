@@ -344,17 +344,17 @@ if mobile:
     if 'authentication_status' not in st.session_state:
         st.session_state['authentication_status'] = None
 
-    if st.session_state["authentication_status"] != True:
-        # Initialize the authenticator
-        if 'authenticator' not in st.session_state:
-            st.session_state['authenticator'] = stauth.Authenticate(
-                credentials,
-                "my_cookie_name",  # Define a specific cookie name for your app
-                "my_signature_key",  # This should be a long random string to secure the cookie
-                cookie_expiry_days=30,
-                pre_authorized=None
-            )
-        st.session_state['authenticator'].login()
+    # if st.session_state["authentication_status"] != True:
+    #     # Initialize the authenticator
+    #     if 'authenticator' not in st.session_state:
+    #         st.session_state['authenticator'] = stauth.Authenticate(
+    #             credentials,
+    #             "my_cookie_name",  # Define a specific cookie name for your app
+    #             "my_signature_key",  # This should be a long random string to secure the cookie
+    #             cookie_expiry_days=30,
+    #             pre_authorized=None
+    #         )
+    #     st.session_state['authenticator'].login()
 
     if st.session_state["authentication_status"]:
         role = credentials['usernames'][st.session_state['username'].lower()]['role']
@@ -957,17 +957,17 @@ else:
     if 'authentication_status' not in st.session_state:
         st.session_state['authentication_status'] = None
 
-    if st.session_state["authentication_status"] != True:
-        # Initialize the authenticator
-        if 'authenticator' not in st.session_state:
-            st.session_state['authenticator'] = stauth.Authenticate(
-                credentials,
-                "my_cookie_name",  # Define a specific cookie name for your app
-                "my_signature_key",  # This should be a long random string to secure the cookie
-                cookie_expiry_days=30,
-                pre_authorized=None
-            )
-        st.session_state['authenticator'].login()
+    # if st.session_state["authentication_status"] != True:
+    #     # Initialize the authenticator
+    #     if 'authenticator' not in st.session_state:
+    #         st.session_state['authenticator'] = stauth.Authenticate(
+    #             credentials,
+    #             "my_cookie_name",  # Define a specific cookie name for your app
+    #             "my_signature_key",  # This should be a long random string to secure the cookie
+    #             cookie_expiry_days=30,
+    #             pre_authorized=None
+    #         )
+    #     st.session_state['authenticator'].login()
 
     if st.session_state["authentication_status"]:
         role = credentials['usernames'][st.session_state['username'].lower()]['role']
