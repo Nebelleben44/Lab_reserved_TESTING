@@ -25,14 +25,12 @@ EQUIPMENT_DETAILS_FILE_PATH = 'equipment_details.json'
 # Initialize files if they don't exist
 @st.cache_resource
 def init_file(file_path, columns=None):
-    st.write(f"init_file time: {time.time():.2f} seconds")
     if not os.path.exists(file_path):
         df = pd.DataFrame(columns=columns) if columns else pd.DataFrame()
         df.to_csv(file_path, index=False)
 
 @st.cache_resource
 def init_announcement_file():
-    st.write(f"init_ann time: {time.time():.2f} seconds")
     if not os.path.exists(ANNOUNCEMENT_FILE_PATH):
         with open(ANNOUNCEMENT_FILE_PATH, 'w') as f:
             f.write('')
@@ -46,7 +44,6 @@ init_announcement_file()
 # Read the announcement from the text file
 @st.cache_resource
 def read_announcement():
-    st.write(f"read_ann time: {time.time():.2f} seconds")
     if os.path.exists(ANNOUNCEMENT_FILE_PATH):
         with open(ANNOUNCEMENT_FILE_PATH, 'r') as f:
             announcement = f.read().strip()
@@ -54,9 +51,7 @@ def read_announcement():
     return ''
 
 # Update the announcement in the text file
-@st.cache_resource
 def update_announcement(text, file_path=ANNOUNCEMENT_FILE_PATH):
-    st.write(f"up_ann time: {time.time():.2f} seconds")
     try:
         with open(file_path, 'w') as file:
             file.write(text)
@@ -67,7 +62,6 @@ def update_announcement(text, file_path=ANNOUNCEMENT_FILE_PATH):
 # Load data from CSV
 @st.cache_resource
 def load_data(file_path):
-    st.write(f"load data time: {time.time():.2f} seconds")
     try:
         if os.path.exists(file_path):
             return pd.read_csv(file_path)
@@ -77,7 +71,6 @@ def load_data(file_path):
         return pd.DataFrame()
 
 # Save data to CSV
-@st.cache_resource
 def save_data(df, file_path):
     try:
         df.to_csv(file_path, index=False)
@@ -87,7 +80,6 @@ def save_data(df, file_path):
 
 @st.cache_resource
 def fetch_data(file_path):
-    st.write(f"fetch time: {time.time():.2f} seconds")
     df = load_data(file_path)
     df['Start_Time'] = pd.to_datetime(df['Start_Time'], format='%Y/%m/%d %H:%M:%S', errors='coerce')
     df['End_Time'] = pd.to_datetime(df['End_Time'], format='%Y/%m/%d %H:%M:%S', errors='coerce')
@@ -96,7 +88,6 @@ def fetch_data(file_path):
 # Configure Git
 @st.cache_resource
 def configure_git():
-    st.write(f"config time: {time.time():.2f} seconds")
     try:
         username = st.secrets["github"]["username"]
         email = st.secrets["github"]["email"]
@@ -135,12 +126,10 @@ def backup_to_github(file_path, commit_message="Update data"):
 # Load equipment details from JSON
 @st.cache_resource
 def load_json(file_path):
-    st.write(f"load json time: {time.time():.2f} seconds")
     with open(file_path, 'r') as file:
         return json.load(file)
 
 # Save equipment details to JSON
-@st.cache_resource
 def save_equipment_details(details, json_file_path=EQUIPMENT_DETAILS_FILE_PATH):
     try:
         with open(json_file_path, 'w') as file:
@@ -150,7 +139,6 @@ def save_equipment_details(details, json_file_path=EQUIPMENT_DETAILS_FILE_PATH):
         st.error(f"Error saving equipment details: {e}")
 
 # Check if image exists
-@st.cache_resource
 def image_exists(image_path):
     return os.path.exists(image_path)
 
@@ -165,20 +153,17 @@ def safe_display_image(image_path, width=100, offset=0):
         st.error("Image not available.")
 
 # Convert DataFrame to CSV string
-@st.cache_resource
 def convert_df_to_csv(df):
     output = StringIO()
     df.to_csv(output, index=False)
     return output.getvalue().encode('utf-8')
 
 # Download non-PCR data
-@st.cache_resource
 def download_non_pcr():
     df_non_pcr = fetch_data(NON_PCR_FILE_PATH)
     return df_non_pcr
 
 # Download PCR data
-@st.cache_resource
 def download_pcr():
     df_pcr = fetch_data(PCR_FILE_PATH)
     return df_pcr
@@ -186,7 +171,6 @@ def download_pcr():
 # Generate time slots
 @st.cache_resource
 def generate_time_slots():
-    st.write(f"slots time: {time.time():.2f} seconds")
     slots = [{
         "label": f"Slot {i + 1}: {datetime.time(hour=h).strftime('%H:%M')}-{datetime.time(hour=h + 3).strftime('%H:%M')}",
         "start": datetime.time(hour=h), "end": datetime.time(hour=h + 3)}
@@ -197,14 +181,12 @@ slots = generate_time_slots()
 
 # Load equipment details once
 def load_equipment_details():
-    st.write(f"losd equip time: {time.time():.2f} seconds")
     if 'equipment_details' not in st.session_state:
         st.session_state.equipment_details = load_json(EQUIPMENT_DETAILS_FILE_PATH)
 
 load_equipment_details()
 
 # Log actions
-@st.cache_resource
 def log_action(action, user, details):
     log_entry = {
         "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -225,7 +207,6 @@ def log_action(action, user, details):
     except Exception as e:
         st.error(f"Error logging action: {e}")
 
-@st.cache_resource
 def apply_mobile_style():
     # Mobile style
     st.markdown(
@@ -283,7 +264,7 @@ def apply_mobile_style():
     '''
     st.markdown(css, unsafe_allow_html=True)
 
-@st.cache_resource
+
 def apply_web_style():
     # Web style
     st.markdown(
