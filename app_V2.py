@@ -960,7 +960,8 @@ else:
     if st.session_state["authentication_status"] != True:
         # Initialize the authenticator
         if 'authenticator' not in st.session_state:
-            st.session_state['authenticator'] = st.session_state['authenticator'].login()
+            st.session_state['authenticator'] = None
+            st.session_state['authenticator'].login()
 
     if st.session_state["authentication_status"]:
         role = credentials['usernames'][st.session_state['username'].lower()]['role']
