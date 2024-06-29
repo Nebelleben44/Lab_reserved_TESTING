@@ -54,6 +54,7 @@ def read_announcement():
     return ''
 
 # Update the announcement in the text file
+@st.cache_resource
 def update_announcement(text, file_path=ANNOUNCEMENT_FILE_PATH):
     st.write(f"up_ann time: {time.time():.2f} seconds")
     try:
@@ -76,6 +77,7 @@ def load_data(file_path):
         return pd.DataFrame()
 
 # Save data to CSV
+@st.cache_resource
 def save_data(df, file_path):
     try:
         df.to_csv(file_path, index=False)
@@ -138,6 +140,7 @@ def load_json(file_path):
         return json.load(file)
 
 # Save equipment details to JSON
+@st.cache_resource
 def save_equipment_details(details, json_file_path=EQUIPMENT_DETAILS_FILE_PATH):
     try:
         with open(json_file_path, 'w') as file:
@@ -147,6 +150,7 @@ def save_equipment_details(details, json_file_path=EQUIPMENT_DETAILS_FILE_PATH):
         st.error(f"Error saving equipment details: {e}")
 
 # Check if image exists
+@st.cache_resource
 def image_exists(image_path):
     return os.path.exists(image_path)
 
@@ -161,17 +165,20 @@ def safe_display_image(image_path, width=100, offset=0):
         st.error("Image not available.")
 
 # Convert DataFrame to CSV string
+@st.cache_resource
 def convert_df_to_csv(df):
     output = StringIO()
     df.to_csv(output, index=False)
     return output.getvalue().encode('utf-8')
 
 # Download non-PCR data
+@st.cache_resource
 def download_non_pcr():
     df_non_pcr = fetch_data(NON_PCR_FILE_PATH)
     return df_non_pcr
 
 # Download PCR data
+@st.cache_resource
 def download_pcr():
     df_pcr = fetch_data(PCR_FILE_PATH)
     return df_pcr
@@ -198,6 +205,7 @@ def load_equipment_details():
 load_equipment_details()
 
 # Log actions
+@st.cache_resource
 def log_action(action, user, details):
     log_entry = {
         "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -218,6 +226,7 @@ def log_action(action, user, details):
     except Exception as e:
         st.error(f"Error logging action: {e}")
 
+@st.cache_resource
 def apply_mobile_style():
     # Mobile style
     st.markdown(
@@ -275,7 +284,7 @@ def apply_mobile_style():
     '''
     st.markdown(css, unsafe_allow_html=True)
 
-
+@st.cache_resource
 def apply_web_style():
     # Web style
     st.markdown(
