@@ -196,7 +196,6 @@ def generate_time_slots():
 slots = generate_time_slots()
 
 # Load equipment details once
-@st.cache_resource
 def load_equipment_details():
     st.write(f"losd equip time: {time.time():.2f} seconds")
     if 'equipment_details' not in st.session_state:
