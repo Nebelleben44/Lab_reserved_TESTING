@@ -941,8 +941,6 @@ if mobile:
 else:
     apply_web_style()
 
-    st.write(st.session_state['authenticator'])
-    
     credentials = {
         "usernames": {
             user.lower(): {
@@ -961,14 +959,15 @@ else:
 
     if st.session_state["authentication_status"] != True:
         # Initialize the authenticator
-        if 'authenticator' not in st.session_state:
-            st.session_state['authenticator'] = stauth.Authenticate(
-                credentials,
-                "Lab_Reserved",  # Define a specific cookie name for your app
-                "LabReserved_2024",  # This should be a long random string to secure the cookie
-                cookie_expiry_days=365,
-                pre_authorized=None
-            )
+        # if 'authenticator' not in st.session_state:
+        #     st.session_state['authenticator'] = stauth.Authenticate(
+        #         credentials,
+        #         "Lab_Reserved",  # Define a specific cookie name for your app
+        #         "LabReserved_2024",  # This should be a long random string to secure the cookie
+        #         cookie_expiry_days=365,
+        #         pre_authorized=None
+        #     )
+        
         st.session_state['authenticator'].login()
 
     if st.session_state["authentication_status"]:
