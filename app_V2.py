@@ -23,11 +23,13 @@ LOG_FILE_PATH = "change_log.csv"
 EQUIPMENT_DETAILS_FILE_PATH = 'equipment_details.json'
 
 # Initialize files if they don't exist
+@st.cache_resource
 def init_file(file_path, columns=None):
     if not os.path.exists(file_path):
         df = pd.DataFrame(columns=columns) if columns else pd.DataFrame()
         df.to_csv(file_path, index=False)
 
+@st.cache_resource
 def init_announcement_file():
     if not os.path.exists(ANNOUNCEMENT_FILE_PATH):
         with open(ANNOUNCEMENT_FILE_PATH, 'w') as f:
@@ -40,6 +42,7 @@ init_file(AUTOCLAVES_PATH, ['Counts'])
 init_announcement_file()
 
 # Read the announcement from the text file
+@st.cache_resource
 def read_announcement():
     if os.path.exists(ANNOUNCEMENT_FILE_PATH):
         with open(ANNOUNCEMENT_FILE_PATH, 'r') as f:
@@ -57,6 +60,7 @@ def update_announcement(text, file_path=ANNOUNCEMENT_FILE_PATH):
         st.error(f"Error saving announcement: {e}")
 
 # Load data from CSV
+@st.cache_resource
 def load_data(file_path):
     try:
         if os.path.exists(file_path):
@@ -74,6 +78,7 @@ def save_data(df, file_path):
     except Exception as e:
         st.error(f"Error saving data: {e}")
 
+@st.cache_resource
 def fetch_data(file_path):
     df = load_data(file_path)
     df['Start_Time'] = pd.to_datetime(df['Start_Time'], format='%Y/%m/%d %H:%M:%S', errors='coerce')
@@ -81,6 +86,7 @@ def fetch_data(file_path):
     return df
 
 # Configure Git
+@st.cache_resource
 def configure_git():
     try:
         username = st.secrets["github"]["username"]
@@ -91,6 +97,7 @@ def configure_git():
         st.error(f"An error occurred while configuring Git: {e}")
 
 # Backup to GitHub
+@st.cache_resource
 def backup_to_github(file_path, commit_message="Update data"):
     try:
         configure_git()
@@ -117,6 +124,7 @@ def backup_to_github(file_path, commit_message="Update data"):
         st.error(f"An error occurred while backing up to GitHub: {e}")
 
 # Load equipment details from JSON
+@st.cache_resource
 def load_json(file_path):
     with open(file_path, 'r') as file:
         return json.load(file)
@@ -135,6 +143,7 @@ def image_exists(image_path):
     return os.path.exists(image_path)
 
 # Safely display image
+@st.cache_resource
 def safe_display_image(image_path, width=100, offset=0):
     if image_exists(image_path):
         cols = st.columns([offset, 1])
@@ -160,6 +169,7 @@ def download_pcr():
     return df_pcr
 
 # Generate time slots
+@st.cache_resource
 def generate_time_slots():
     slots = [{
         "label": f"Slot {i + 1}: {datetime.time(hour=h).strftime('%H:%M')}-{datetime.time(hour=h + 3).strftime('%H:%M')}",
@@ -170,6 +180,7 @@ def generate_time_slots():
 slots = generate_time_slots()
 
 # Load equipment details once
+@st.cache_resource
 def load_equipment_details():
     if 'equipment_details' not in st.session_state:
         st.session_state.equipment_details = load_json(EQUIPMENT_DETAILS_FILE_PATH)
