@@ -954,20 +954,33 @@ else:
         }
     }
 
-    if 'authentication_status' not in st.session_state:
-        st.session_state['authentication_status'] = None
 
-    if st.session_state["authentication_status"] != True:
-        # Initialize the authenticator
-        if 'authenticator' not in st.session_state:
-            st.session_state['authenticator'] = stauth.Authenticate(
-                credentials,
-                "Lab_Reserved",  # Define a specific cookie name for your app
-                "LabReserved_2024",  # This should be a long random string to secure the cookie
-                cookie_expiry_days=365,
-                pre_authorized=None
-            )
-        st.session_state['authenticator'].login()
+    # Function to authenticate users
+    def authenticate(username, password):
+        if username in credentials:
+            if credentials[username]["password"] == password:
+                return True, credentials[username]["name"]
+        return False, None
+
+
+    # Check if the user is logged in
+    if 'authentication_status' not in st.session_state:
+        st.session_state['authentication_status'] = False
+        st.session_state['username'] = None
+
+    if not st.session_state['authentication_status']:
+        st.title("Login")
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+
+        if st.button("Login"):
+            is_authenticated, name = authenticate(username, password)
+            if is_authenticated:
+                st.session_state['authentication_status'] = True
+                st.session_state['username'] = username
+                st.success(f"Welcome, {name}!")
+            else:
+                st.error("Invalid username or password")
 
     if st.session_state["authentication_status"]:
         role = credentials['usernames'][st.session_state['username'].lower()]['role']
