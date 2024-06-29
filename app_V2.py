@@ -124,7 +124,6 @@ def backup_to_github(file_path, commit_message="Update data"):
         st.error(f"An error occurred while backing up to GitHub: {e}")
 
 # Load equipment details from JSON
-@st.cache_resource
 def load_json(file_path):
     with open(file_path, 'r') as file:
         return json.load(file)
