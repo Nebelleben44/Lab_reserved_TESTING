@@ -957,9 +957,9 @@ else:
 
     # Function to authenticate users
     def authenticate(username, password):
-        if username in credentials:
-            if credentials[username]["password"] == password:
-                return True, credentials[username]["name"]
+        user = credentials.get(username)
+        if user and user["password"] == password:
+            return True, user["name"]
         return False, None
 
 
@@ -970,7 +970,7 @@ else:
 
     if not st.session_state['authentication_status']:
         st.title("Login")
-        username = st.text_input("Username")
+        username = st.text_input("Username").lower()
         password = st.text_input("Password", type="password")
 
         if st.button("Login"):
@@ -1658,10 +1658,3 @@ else:
 
 
             local_css("style.css")
-
-
-    elif st.session_state["authentication_status"] is False:
-        st.error('Name/password is incorrect')
-
-    elif st.session_state["authentication_status"] is None:
-        st.warning('Please enter your username and password')
