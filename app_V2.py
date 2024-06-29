@@ -930,6 +930,7 @@ if mobile:
         st.warning('Please enter your username and password')
 
 else:
+    start_time = time.time()  # Start timer
     apply_web_style()
 
     credentials = {
@@ -959,6 +960,10 @@ else:
                 pre_authorized=None
             )
         st.session_state['authenticator'].login()
+
+    end_time = time.time()  # End timer
+
+    st.write(f"Startup time: {end_time - start_time:.2f} seconds")
 
     if st.session_state["authentication_status"]:
         role = credentials['usernames'][st.session_state['username'].lower()]['role']
