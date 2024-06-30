@@ -954,6 +954,7 @@ else:
         }
     }
 
+    st.write(credentials)
 
     # Function to authenticate users
     def authenticate(username, password):
@@ -971,7 +972,7 @@ else:
 
     if not st.session_state['authentication_status']:
         st.title("Login")
-        username = st.text_input("Username")
+        username = st.text_input("Username").lower()
         password = st.text_input("Password", type="password")
 
         if st.button("Login"):
