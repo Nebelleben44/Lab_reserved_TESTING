@@ -977,6 +977,7 @@ else:
             if is_authenticated:
                 st.session_state['authentication_status'] = True
                 st.session_state['username'] = username
+                st.session_state['name'] = name
                 st.success(f"Login Successful, {name}!")
             else:
                 st.error("Invalid username or password")
@@ -1003,7 +1004,7 @@ else:
 
         # Usual app interface
         st.write(st.session_state)
-        message = f"### Welcome <span class='welcome-message'>{st.secrets['credentials']['usernames'][st.session_state['username']]['name']}</span>"
+        message = f"### Welcome <span class='welcome-message'>{st.session_state['name']}</span>"
         st.markdown(message, unsafe_allow_html=True)
         if st.session_state['authentication_status']:
             if st.sidebar.button("Logout"):
