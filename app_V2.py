@@ -982,7 +982,7 @@ else:
             else:
                 st.error("Invalid username or password")
 
-    if st.session_state["authentication_status"]:
+    else:
         role = credentials['usernames'][st.session_state['username'].lower()]['role']
 
         # Check if the user is authorized (either an admin or a lecturer) and allow them to post an announcement
@@ -1011,7 +1011,6 @@ else:
                 st.session_state['authentication_status'] = False
                 st.session_state['username'] = None
                 st.session_state['name'] = None
-                st.session_state['role'] = None
                 st.rerun()  # Rerun the app to refresh the state
 
         if role == "Admins":
