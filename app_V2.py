@@ -954,7 +954,7 @@ else:
         }
     }
 
-    st.write(credentials)
+    st.write(credentials.get('yanawat4511'))
 
     # Function to authenticate users
     def authenticate(username, password):
