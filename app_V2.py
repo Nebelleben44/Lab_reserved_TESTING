@@ -941,22 +941,22 @@ if mobile:
 else:
     apply_web_style()
 
-    # Load credentials from st.secrets
     credentials = {
-        user.lower(): {
-            "name": st.secrets["credentials"]["usernames"][user]["name"],
-            "username": user.lower(),
-            "email": st.secrets["credentials"]["usernames"][user]["email"],
-            "password": st.secrets["credentials"]["usernames"][user]["password"],
-            "role": st.secrets["credentials"]["usernames"][user]["role"]
+        "usernames": {
+            user.lower(): {
+                "name": st.secrets["credentials"]["usernames"][user]["name"],
+                "username": user.lower(),
+                "email": st.secrets["credentials"]["usernames"][user]["email"],
+                "password": st.secrets["credentials"]["usernames"][user]["password"],
+                "role": st.secrets["credentials"]["usernames"][user]["role"]
+            }
+            for user in st.secrets["credentials"]["usernames"]
         }
-        for user in st.secrets["credentials"]["usernames"]
     }
-
 
     # Function to authenticate users
     def authenticate(username, password):
-        user = credentials.get(username)
+        user = st.secrets["credentials"]["usernames"][username]
         if user and user["password"] == password:
             return True, user["name"]
         return False, None
@@ -966,11 +966,10 @@ else:
     if 'authentication_status' not in st.session_state:
         st.session_state['authentication_status'] = False
         st.session_state['username'] = None
-        st.session_state['name'] = None
 
     if not st.session_state['authentication_status']:
         st.title("Login")
-        username = st.text_input("Username").lower()
+        username = st.text_input("Username")
         password = st.text_input("Password", type="password")
 
         if st.button("Login"):
@@ -982,35 +981,37 @@ else:
                 st.success(f"Login Successful, {name}!")
             else:
                 st.error("Invalid username or password")
-    else:
-        # Usual app interface
-        role = credentials['usernames'][st.session_state['username']]['role']
-        st.sidebar.write(f"Logged in as {st.session_state['name']}")
 
+    else:
+        role = credentials['usernames'][st.session_state['username'].lower()]['role']
+
+        # Check if the user is authorized (either an admin or a lecturer) and allow them to post an announcement
         if role in ["Admins", "Lecturer"]:
             with st.sidebar:
                 st.write("Admin and Lecturer Controls")
-                new_announcement_text = st.text_area("### Enter announcement:")
+                new_announcement_text = st.text_area("### Enter announcement:", value=announcement_text)
                 if st.button("Update Announcement"):
-                    update_announcement(new_announcement_text, ANNOUNCEMENT_FILE_PATH)
+                    update_announcement(new_announcement_text,ANNOUNCEMENT_FILE_PATH)
                     st.session_state['announcement'] = new_announcement_text
 
-        # Display announcements if available
-        announcement_text = st.session_state.get('announcement', '')
+        # Always check if there's an announcement to display
         if announcement_text:
+            # Using st.markdown to insert HTML for a moving text effect
             st.markdown(
                 f"<marquee style='width: 100%; color: red; font-size: 24px;'>{announcement_text}</marquee>",
                 unsafe_allow_html=True
             )
 
+        # Usual app interface
+        st.write(st.session_state)
         message = f"### Welcome <span class='welcome-message'>{st.session_state['name']}</span>"
         st.markdown(message, unsafe_allow_html=True)
-
-        if st.sidebar.button("Logout"):
-            st.session_state['authentication_status'] = False
-            st.session_state['username'] = None
-            st.session_state['name'] = None
-            st.experimental_rerun()  # Rerun the app to refresh the state
+        if st.session_state['authentication_status']:
+            if st.sidebar.button("Logout"):
+                st.session_state['authentication_status'] = False
+                st.session_state['username'] = None
+                st.session_state['name'] = None
+                st.rerun()  # Rerun the app to refresh the state
 
         if role == "Admins":
             tab1, tab2, tab3, tab5 = st.tabs(["Reservation Tables", "Reservation Forms", "Reservation Cancellation", "Admins Interface"])
