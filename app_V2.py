@@ -1003,9 +1003,15 @@ else:
 
         # Usual app interface
         st.write(st.session_state)
-        message = f"### Welcome <span class='welcome-message'>{st.session_state['name']}</span>"
+        message = f"### Welcome <span class='welcome-message'>{user["name"]}</span>"
         st.markdown(message, unsafe_allow_html=True)
-        st.session_state['authentication_status'].logout(locataion = 'sidebar')
+        if st.session_state['authentication_status']:
+            if st.sidebar.button("Logout"):
+                st.session_state['authentication_status'] = False
+                st.session_state['username'] = None
+                st.session_state['name'] = None
+                st.session_state['role'] = None
+                st.rerun()  # Rerun the app to refresh the state
 
         if role == "Admins":
             tab1, tab2, tab3, tab5 = st.tabs(["Reservation Tables", "Reservation Forms", "Reservation Cancellation", "Admins Interface"])
