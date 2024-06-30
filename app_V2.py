@@ -939,12 +939,6 @@ if mobile:
 
                 st.write("## You have no reservations.")
 
-    elif st.session_state["authentication_status"] is False:
-        st.error('Name/password is incorrect')
-
-    elif st.session_state["authentication_status"] is None:
-        st.warning('Please enter your username and password')
-
 else:
     apply_web_style()
 
