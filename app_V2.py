@@ -1008,7 +1008,7 @@ else:
                 st.session_state['username'] = None
                 st.session_state['name'] = None
                 st.session_state['role'] = None
-                st.experimental_rerun()  # Rerun the app to refresh the state
+                st.rerun()  # Rerun the app to refresh the state
 
         message = f"### Welcome <span class='welcome-message'>{st.session_state['name']}</span>"
         st.markdown(message, unsafe_allow_html=True)
