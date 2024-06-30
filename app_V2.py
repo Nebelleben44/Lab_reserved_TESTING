@@ -985,7 +985,7 @@ else:
     else:
         # Usual app interface
         role = credentials['usernames'][st.session_state['username']]['role']
-        st.sidebar.write(f"Logged in as {st.session_state['name']} ({role})")
+        st.sidebar.write(f"Logged in as {st.session_state['name']}")
 
         if role in ["Admins", "Lecturer"]:
             with st.sidebar:
