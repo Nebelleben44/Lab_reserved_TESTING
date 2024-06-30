@@ -1003,7 +1003,7 @@ else:
 
         # Usual app interface
         st.write(st.session_state)
-        message = f"### Welcome <span class='welcome-message'>{user["name"]}</span>"
+        message = f"### Welcome <span class='welcome-message'>{user['name']}</span>"
         st.markdown(message, unsafe_allow_html=True)
         if st.session_state['authentication_status']:
             if st.sidebar.button("Logout"):
