@@ -21,3 +21,9 @@ Start_Time              2024-06-30 14:00:00
 End_Time                2024-06-30 16:00:00
 Name: 2, dtype: object"
 2024-06-30 12:54:55,Add Reservation,Yanawat_4511,"{'Name': 'Yanawat_4511', 'Room': 'Central Lab, 5th floor', 'Equipments': 'Refrigerated Incubator Shaker', 'Start_Time': datetime.datetime(2024, 6, 30, 14, 0), 'End_Time': datetime.datetime(2024, 6, 30, 16, 0)}"
+2024-06-30 12:55:00,Delete Reservation,Yanawat_4511,"Details: Name                           Yanawat_4511
+Room                 Central Lab, 5th floor
+Equipments    Refrigerated Incubator Shaker
+Start_Time              2024-06-30 14:00:00
+End_Time                2024-06-30 16:00:00
+Name: 2, dtype: object"
