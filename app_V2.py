@@ -979,6 +979,7 @@ else:
                 st.session_state['username'] = username
                 st.session_state['name'] = name
                 st.success(f"Login Successful, {name}!")
+                st.rerun()
             else:
                 st.error("Invalid username or password")
 
