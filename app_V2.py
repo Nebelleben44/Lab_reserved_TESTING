@@ -957,7 +957,6 @@ else:
     # Function to authenticate users
     def authenticate(username, password):
         user = st.secrets["credentials"]["usernames"][username]
-        st.write(user)
         if user and user["password"] == password:
             return True, user["name"]
         return False, None
@@ -975,11 +974,10 @@ else:
 
         if st.button("Login"):
             is_authenticated, name = authenticate(username, password)
-            st.write(username)
             if is_authenticated:
                 st.session_state['authentication_status'] = True
                 st.session_state['username'] = username
-                st.success(f"Welcome, {name}!")
+                st.success(f"Login Successful, {name}!")
             else:
                 st.error("Invalid username or password")
 
@@ -1004,7 +1002,14 @@ else:
             )
 
         # Usual app interface
-        st.session_state['authenticator'].logout(location='sidebar')
+        if st.session_state['authentication_status']:
+            if st.sidebar.button("Logout"):
+                st.session_state['authentication_status'] = False
+                st.session_state['username'] = None
+                st.session_state['name'] = None
+                st.session_state['role'] = None
+                st.experimental_rerun()  # Rerun the app to refresh the state
+
         message = f"### Welcome <span class='welcome-message'>{st.session_state['name']}</span>"
         st.markdown(message, unsafe_allow_html=True)
         if role == "Admins":
