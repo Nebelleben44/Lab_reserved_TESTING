@@ -958,6 +958,7 @@ else:
     # Function to authenticate users
     def authenticate(username, password):
         user = credentials.get(username)
+        st.write(user)
         if user and user["password"] == password:
             return True, user["name"]
         return False, None
