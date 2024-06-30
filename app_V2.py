@@ -1003,7 +1003,10 @@ else:
             )
 
         # Usual app interface
-        st.write(st.session_state)
+        st.write(st.session_state['name'])
+        st.write(st.session_state['username'])
+        st.write(st.session_state['authentication_status'])
+
         message = f"### Welcome <span class='welcome-message'>{st.session_state['name']}</span>"
         st.markdown(message, unsafe_allow_html=True)
         if st.session_state['authentication_status']:
