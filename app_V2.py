@@ -975,6 +975,7 @@ else:
 
         if st.button("Login"):
             is_authenticated, name = authenticate(username, password)
+            st.write(username)
             if is_authenticated:
                 st.session_state['authentication_status'] = True
                 st.session_state['username'] = username
