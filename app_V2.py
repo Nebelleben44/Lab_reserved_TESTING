@@ -954,11 +954,9 @@ else:
         }
     }
 
-    st.write(st.secrets["credentials"]["usernames"]['Yanawat4511'])
-
     # Function to authenticate users
     def authenticate(username, password):
-        user = credentials.get(username)
+        user = st.secrets["credentials"]["usernames"][username]
         st.write(user)
         if user and user["password"] == password:
             return True, user["name"]
