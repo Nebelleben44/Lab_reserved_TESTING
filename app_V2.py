@@ -967,7 +967,7 @@ else:
         st.session_state['authentication_status'] = False
         st.session_state['username'] = None
 
-    if not st.session_state['authentication_status']:
+    if st.session_state['authentication_status'] != True:
         st.title("Login")
         username = st.text_input("Username")
         password = st.text_input("Password", type="password")
@@ -982,7 +982,7 @@ else:
             else:
                 st.error("Invalid username or password")
 
-    else:
+    if st.session_state["authentication_status"] == True:
         role = credentials['usernames'][st.session_state['username'].lower()]['role']
 
         # Check if the user is authorized (either an admin or a lecturer) and allow them to post an announcement
